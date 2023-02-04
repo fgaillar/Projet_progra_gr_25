@@ -18,12 +18,7 @@ def create_board_info(file):
                     board_info[current_key] = []
                 board_info[current_key].append(tuple(line.strip().split()))
 
-    board_info["ghosts"] = tuple(magic_data for magic_data in board_info["ghosts"])
-    board_info["magic"] = tuple(magic_data for magic_data in board_info["magic"])
-
     return board_info
 
-
-def create_board(info):
-    board = []
+print(create_board_info('bruh.ght'))
 
