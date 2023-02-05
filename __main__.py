@@ -40,25 +40,22 @@ def create_board_info(file):
         print("This file is not in .ght please put an other one.")
     return board_info
 
-def create_board():
-    board_info = create_board_info('bruh.ght')
-    coord_y, coord_x = board_info['size']
-    board = [[0] * coord_y for row in range(coord_x)]
 
-    for x in range(coord_x):
-        print("-------+" * coord_y)
-        print("       |" * coord_y)
-        for y in range(coord_y):
-            if y == coord_y - 1:
-                print("  ", board[x][y], "  |")
-            else:
-                print("  ", board[x][y], "  |", end="")
-        print("       |" * coord_y)
+def create_board(rows, colmn):
+    board = ['+' + '{}+'.format('-' * 7) * colmn]
+    for i in range(rows):
+        row = ['|' + '       |' * colmn]
+        for j in range(3):
+            board.append('\n'.join(row))
+        board.append('+'+'{}+'.format('-' * 7) * colmn)
+    return "\n".join(board)
 
 
 def main():
     create_board_info('bruh.ght')
-    create_board()
+    board_info = create_board_info('bruh.ght')
+    coord_x, coord_y = board_info['size']
+    print(create_board(coord_y, coord_x))
 
 
 if __name__ == "__main__":
