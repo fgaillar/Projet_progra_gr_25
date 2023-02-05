@@ -41,10 +41,12 @@ def create_board_info(file):
     return board_info
 
 
-def create_board(rows, colmn):
-    board = ['+' + '{}+'.format('-' * 7) * colmn]
-    for i in range(rows):
-        row = ['|' + '       |' * colmn]
+def create_board():
+    board_info = create_board_info('bruh.ght')
+    coord_x, coord_y = board_info['size']
+    board = ['+' + '{}+'.format('-' * 7) * coord_x]
+    for i in range(coord_y):
+        row = ['|' + '       |' * coord_x]
         for j in range(3):
             board.append('\n'.join(row))
         board.append('+'+'{}+'.format('-' * 7) * colmn)
@@ -53,9 +55,7 @@ def create_board(rows, colmn):
 
 def main():
     create_board_info('bruh.ght')
-    board_info = create_board_info('bruh.ght')
-    coord_x, coord_y = board_info['size']
-    print(create_board(coord_y, coord_x))
+    print(create_board())
 
 
 if __name__ == "__main__":
