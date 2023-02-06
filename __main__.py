@@ -2,6 +2,7 @@ from blessed import Terminal
 
 term = Terminal()
 
+
 def create_board_info(file):
     if '.ght' in file:
         board_info = {}
@@ -42,19 +43,22 @@ def create_board_info(file):
 
 
 def create_board():
-    board_info = create_board_info('bruh.ght')
-    coord_x, coord_y = board_info['size']
+    coord_y, coord_x = board_info['size']
     board = ['+' + '{}+'.format('-' * 7) * coord_x]
     for i in range(coord_y):
-        row = ['|' + '       |' * coord_x]
         for j in range(3):
+            if j == 1:
+                row = ['|' + '   {}   |'.format(0) * coord_x]
+            else:
+                row = ['|' + '       |' * coord_x]
             board.append('\n'.join(row))
-        board.append('+'+'{}+'.format('-' * 7) * colmn)
+        board.append('+'+'{}+'.format('-' * 7) * coord_x)
     return "\n".join(board)
 
 
 def main():
-    create_board_info('bruh.ght')
+    global board_info
+    board_info = create_board_info('bruh.ght')
     print(create_board())
 
 
