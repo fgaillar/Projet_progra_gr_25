@@ -2,6 +2,7 @@ from blessed import Terminal
 
 term = Terminal()
 
+
 def create_board_info(file):
     if '.ght' in file:
         board_info = {}
@@ -28,8 +29,8 @@ def create_board_info(file):
                         for y in range(1, size_y + 1):
                             board_info['map'][(x, y)] = 0
                 elif current_key == 'ghosts':
-                    equipe, x, y = int(split_line[0]), int(split_line[1]), int(split_line[2])
-                    board_info['map'][(x, y)] = equipe
+                    team, x, y = int(split_line[0]), int(split_line[1]), int(split_line[2])
+                    board_info['map'][(x, y)] = team
                     board_info[current_key].append(tuple(line.strip().split()))
                 else:
                     if current_key == 'magic':
@@ -41,21 +42,33 @@ def create_board_info(file):
     return board_info
 
 
-def create_board():
-    board_info = create_board_info('bruh.ght')
-    coord_x, coord_y = board_info['size']
-    board = ['+' + '{}+'.format('-' * 7) * coord_x]
-    for i in range(coord_y):
-        row = ['|' + '       |' * coord_x]
-        for j in range(3):
-            board.append('\n'.join(row))
-        board.append('+'+'{}+'.format('-' * 7) * colmn)
-    return "\n".join(board)
+def create_board(board_info):
+    coord_y, coord_x = board_info['size']
+    for y in range((coord_y*4)+1):
+        for x in range((coord_x*8)+1):
+            with term.location(x, y):
+                if x % 8 == 0 and y % 4 == 0:
+                    print('+')
+                elif x % 8 == 0 and y % 4 != 0:
+                    print('|')
+                elif y % 4 == 0 and x % 8 != 0:
+                    print('―')
+                    # Print coord x
+            if ((coord_y*4) == y and x % 4 == 0) and x % 8 != 0:
+                with term.location(x, y+1):
+                    print((x + 4)//8)
+                    # Print coord y
+            elif ((coord_x*8) == x and y % 2 == 0) and y % 4 != 0:
+                with term.location(x+1, y):
+                    print((y + 2)//4)
+
 
 
 def main():
     create_board_info('bruh.ght')
+    print(term.home + term.clear)
     print(create_board())
+
 
 
 if __name__ == "__main__":
