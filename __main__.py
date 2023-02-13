@@ -44,8 +44,8 @@ def create_board_info(file):
 
 def create_board(board_info):
     coord_y, coord_x = board_info['size']
-    for y in range((coord_y*4)+1):
-        for x in range((coord_x*8)+1):
+    for y in range((coord_y * 4) + 1):
+        for x in range((coord_x * 8) + 1):
             with term.location(x, y):
                 if x % 8 == 0 and y % 4 == 0:
                     print('+')
@@ -54,21 +54,22 @@ def create_board(board_info):
                 elif y % 4 == 0 and x % 8 != 0:
                     print('―')
                     # Print coord x
-            if ((coord_y*4) == y and x % 4 == 0) and x % 8 != 0:
-                with term.location(x, y+1):
-                    print((x + 4)//8)
+            if ((coord_y * 4) == y and x % 4 == 0) and x % 8 != 0:
+                with term.location(x, y + 1):
+                    print((x + 4) // 8)
                     # Print coord y
-            elif ((coord_x*8) == x and y % 2 == 0) and y % 4 != 0:
-                with term.location(x+1, y):
-                    print((y + 2)//4)
+            elif ((coord_x * 8) == x and y % 2 == 0) and y % 4 != 0:
+                with term.location(x + 1, y):
+                    print((y + 2) // 4)
 
+
+def player_information(board_info):
+    coord_y, coord_x = board_info['size']
 
 
 def main():
-    create_board_info('bruh.ght')
     print(term.home + term.clear)
-    print(create_board())
-
+    create_board(create_board_info('bruh.ght'))
 
 
 if __name__ == "__main__":
