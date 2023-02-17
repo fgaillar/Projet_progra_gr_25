@@ -12,31 +12,37 @@ def create_board_info(file):
         current_key = ""
         for line in lines:
             if "map:" in line:
-                board_info['map'] = {}
                 current_key = 'map'
             elif "ghosts:" in line:
-                current_key = "spawn"
+                current_key = 'spawn'
                 board_info['spawn'] = {}
             elif "magic:" in line:
                 current_key = "magic"
             elif current_key != "":
                 split_line = line.strip().split()
-                if current_key not in board_info:
-                    board_info[current_key] = []
                 if current_key == 'map':
                     size_x, size_y = int(split_line[0]), int(split_line[1])
                     board_info['size'] = size_x, size_y
                 elif current_key == 'spawn':
                     team, x, y = int(split_line[0]), int(split_line[1]), int(split_line[2])
                     if team == 1:
-                        board_info[current_key]['team1'] = (x, y)
-                        board_info['map'][(x, y)] = 'team1'
-                    else:
-                        board_info[current_key]['team2'] = (x, y)
-                        board_info['map'][(x, y)] = 'team2'
+                        board_info['spawn']['team1'] = (x, y)
+                        if not 'team1' in board_info:
+                            board_info['team1'] = {}
+                            board_info['team1'] = x, y
+                        board_info['team1'] = x, y, 100
+                    if team == 2:
+                        board_info['spawn']['team2'] = (x, y)
+                        if not 'team2' in board_info:
+                            board_info['team2'] = {}
+                        board_info['team2'] = x, y, 100
                 else:
                     if current_key == 'magic':
-                        board_info[current_key].append(tuple(line.strip().split()))
+                        if 'magic' in board_info:
+                            x, y, nb_magic = int(split_line[0]), int(split_line[1]), int(split_line[2])
+                            board_info['magic'] = (x, y), nb_magic
+                        else:
+                            board_info['magic'] = {}
     else:
         print("This file is not in .ght please put an other one.")
     return board_info
@@ -55,15 +61,15 @@ def create_board(board_info):
                     print('┐')
                 elif y == 0 and x % column == 0:
                     print('┬')
-                elif x == 0 and y % (row*coord_x) == 0:
+                elif x == 0 and y % (row * coord_x) == 0:
                     print('└')
-                elif x % (column*coord_x) == 0 and y % (row*coord_x) == 0:
+                elif x % (column * coord_x) == 0 and y % (row * coord_x) == 0:
                     print('┘')
-                elif x % column == 0 and y % (row*coord_x) == 0:
+                elif x % column == 0 and y % (row * coord_x) == 0:
                     print('┴')
                 elif x == 0 and y % row == 0:
                     print('├')
-                elif x % (column*coord_x) == 0 and y % row == 0:
+                elif x % (column * coord_x) == 0 and y % row == 0:
                     print('┤')
                 elif x % column == 0 and y % row == 0:
                     print('┼')
@@ -81,8 +87,6 @@ def create_board(board_info):
                     print((y + row // 2) // row)
 
 
-
-
 def player_information(board_info):
     coord_y, coord_x = board_info['size']
 
@@ -94,7 +98,8 @@ def main():
         while not game_over:
             print(term.home + term.clear)
             coord_y, coord_x = board_info['size']
-            create_board(board_info)
+            print(board_info)
+            # create_board(board_info)
             with term.location(0, coord_y * 8):
                 if input():
                     game_over = True
