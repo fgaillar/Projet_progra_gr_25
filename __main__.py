@@ -54,37 +54,36 @@ def create_board(board_info):
     coord_y, coord_x = board_info['size']
     for y in range((coord_y * row) + 1):
         for x in range((coord_x * column) + 1):
-            with term.location(x, y):
-                if x == 0 and y == 0:
-                    print('┌')
-                elif x % (column * coord_x) == 0 and y == 0:
-                    print('┐')
-                elif y == 0 and x % column == 0:
-                    print('┬')
-                elif x == 0 and y % (row * coord_x) == 0:
-                    print('└')
-                elif x % (column * coord_x) == 0 and y % (row * coord_x) == 0:
-                    print('┘')
-                elif x % column == 0 and y % (row * coord_x) == 0:
-                    print('┴')
-                elif x == 0 and y % row == 0:
-                    print('├')
-                elif x % (column * coord_x) == 0 and y % row == 0:
-                    print('┤')
-                elif x % column == 0 and y % row == 0:
-                    print('┼')
-                elif x % column == 0 and y % row != 0:
-                    print('│')
-                elif y % row == 0 and x % column != 0:
-                    print('─')
-                    # Print coord Y
+            if x == 0 and y == 0:
+                print(term.move_xy(x, y) + '┌', end='')
+            elif x % (column * coord_x) == 0 and y == 0:
+                print(term.move_xy(x, y) + '┐', end='')
+            elif y == 0 and x % column == 0:
+                print(term.move_xy(x, y) + '┬', end='')
+            elif x == 0 and y % (row * coord_x) == 0:
+                print(term.move_xy(x, y) + '└', end='')
+            elif x % (column * coord_x) == 0 and y % (row * coord_x) == 0:
+                print(term.move_xy(x, y) + '┘', end='')
+            elif x % column == 0 and y % (row * coord_x) == 0:
+                print(term.move_xy(x, y) + '┴', end='')
+            elif x == 0 and y % row == 0:
+                print(term.move_xy(x, y) + '├', end='')
+            elif x % (column * coord_x) == 0 and y % row == 0:
+                print(term.move_xy(x, y) + '┤', end='')
+            elif x % column == 0 and y % row == 0:
+                print(term.move_xy(x, y) + '┼', end='')
+            elif x % column == 0 and y % row != 0:
+                print(term.move_xy(x, y) + '│', end='')
+            elif y % row == 0 and x % column != 0:
+                print(term.move_xy(x, y) + '─', end='')
+            # Print coord Y
             if ((coord_y * row) == y and x % (column // 2) == 0) and x % column != 0:
-                with term.location(x, y + 1):
-                    print((x + column // 2) // column)
-                    # Print coord X
+                print(term.move_xy(x, y + 1) + str((x + column // 2) // column), end='')
+            # Print coord X
             elif ((coord_x * column) == x and y % (row // 2) == 0) and y % row != 0:
-                with term.location(x + 1, y):
-                    print((y + row // 2) // row)
+                print(term.move_xy(x + 1, y) + str((y + row // 2) // row), end='')
+    print()
+
 
 
 def player_information(board_info):
@@ -94,15 +93,18 @@ def player_information(board_info):
 def main():
     game_over = False
     board_info = create_board_info('bruh.ght')
-    with term.fullscreen():
-        while not game_over:
-            print(term.home + term.clear)
-            coord_y, coord_x = board_info['size']
-            print(board_info)
-            # create_board(board_info)
-            with term.location(0, coord_y * 8):
-                if input():
-                    game_over = True
+    term = Terminal()
+    print(term.enter_fullscreen)
+    while not game_over:
+        print(term.home + term.clear)
+        coord_y, coord_x = board_info['size']
+        #print(board_info)
+        create_board(board_info)
+        print(term.move_xy(0, coord_y * 8), end='')
+        if input():
+            game_over = True
+    print(term.exit_fullscreen)
+
 
 
 if __name__ == "__main__":
