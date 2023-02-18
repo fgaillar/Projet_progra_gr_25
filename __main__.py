@@ -1,4 +1,7 @@
+import math, os, time, struct, socket
 from blessed import Terminal
+import module_connection as module
+import IA as IA
 
 term = Terminal()
 
@@ -85,27 +88,101 @@ def create_board(board_info):
     print()
 
 
-
 def player_information(board_info):
     coord_y, coord_x = board_info['size']
 
 
-def main():
+def obtain_moves():
+    spawn_ghost = False
+    tab_heal = []
+    tab_move = []
+    tab_attack = []
+    tab_get_magic = []
+    next_move = input("Next move : ")
+    next_move = next_move.split(" ")
+    for i in range(len(next_move)):
+        if "ghost" in next_move[i]:
+           spawn_ghost = True
+        elif "+" in next_move[i]:
+            tab_heal.append(next_move[i])
+        elif "$" in next_move[i]:
+            tab_get_magic.append(next_move[i])
+        elif "x" in next_move[i]:
+            tab_attack.append(next_move[i])
+        elif "@" in next_move[i]:
+            tab_move.append(next_move[i])
+    return [spawn_ghost, tab_heal, tab_get_magic, tab_attack, tab_move]
+
+
+def play_game(map_path, group_1, type_1, group_2, type_2):
+    """Play a game.
+
+    Parameters
+    ----------
+    map_path: path of map file (str)
+    group_1: group of player 1 (int)
+    type_1: type of player 1 (str)
+    group_2: group of player 2 (int)
+    type_2: type of player 2 (str)
+
+    Notes
+    -----
+    Player type is either 'human', 'AI' or 'remote'.
+
+    If there is an external referee, set group id to 0 for remote player.
+
+    """
+
+    ...
+    ...
+    ...
+
+    # create connection, if necessary
+    if type_1 == 'remote':
+        connection = module.create_connection(group_2, group_1)
+    elif type_2 == 'remote':
+        connection = module.create_connection(group_1, group_2)
+
+    nb_turn = 0
     game_over = False
     board_info = create_board_info('bruh.ght')
-    term = Terminal()
     print(term.enter_fullscreen)
+
     while not game_over:
+
         print(term.home + term.clear)
         coord_y, coord_x = board_info['size']
-        #print(board_info)
+        # print(board_info)
         create_board(board_info)
         print(term.move_xy(0, coord_y * 8), end='')
-        if input():
+        nb_turn += 1
+        if input() == 'quit':
             game_over = True
-    print(term.exit_fullscreen)
 
+        # get orders of player 1 and notify them to player 2, if necessary
+        if type_1 == 'remote':
+            orders = module.get_remote_orders(connection)
+        else:
+            orders = IA.get_AI_orders(..., 1)
+            if type_2 == 'remote':
+                module.notify_remote_orders(connection, orders)
+
+        # get orders of player 2 and notify them to player 1, if necessary
+        if type_2 == 'remote':
+            orders = module.get_remote_orders(connection)
+        else:
+            orders = IA.get_AI_orders(..., 2)
+            if type_1 == 'remote':
+                module.notify_remote_orders(connection, orders)
+
+        ...
+        ...
+        print(term.exit_fullscreen)
+
+    # close connection, if necessary
+    if type_1 == 'remote' or type_2 == 'remote':
+        module.close_connection(connection)
 
 
 if __name__ == "__main__":
-    main()
+    play_game('bruh.ght', '25', 'human', '16', 'human')
