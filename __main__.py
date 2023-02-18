@@ -85,11 +85,10 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                             board_info['team2'][(x,y)] = 100
                     else:
                         if current_key == 'magic':
-                            if 'magic' in board_info:
+                            if not 'magic' in board_info:
                                 x, y, nb_magic = int(split_line[0]), int(split_line[1]), int(split_line[2])
-                                board_info['magic'] = (x, y), nb_magic
-                            else:
                                 board_info['magic'] = {}
+                            board_info['magic'][(x, y)] = 100
         else:
             print("This file is not in .ght please put an other one.")
         return board_info
@@ -130,7 +129,13 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                     print(term.move_xy(x + 1, y) + str((y + row // 2) // row), end='')
                 for ghost in board_info['team1']:
                     if ghost == (x, y):
-                        print(term.move_xy(x, y) + 'm') # m = fantom
+                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F47B')
+                for alien in board_info['team2']:
+                    if alien == (x, y):
+                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F47D')
+                for magic in board_info['magic']:
+                    if magic == (x, y):
+                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F52E')
 
     ...
 
