@@ -103,14 +103,14 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                     print(term.move_xy(x, y) + '┌', end='')
                 elif x % (column * coord_x) == 0 and y == 0:
                     print(term.move_xy(x, y) + '┐', end='')
+                elif x == 0 and y % (coord_y * row) == 0:
+                    print(term.move_xy(x, y) + '└', end='')
                 elif y == 0 and x % column == 0:
                     print(term.move_xy(x, y) + '┬', end='')
-                elif x == 0 and y % (row * coord_x) == 0:
-                    print(term.move_xy(x, y) + '└', end='')
+                elif x % column == 0 and y % (coord_y * row) == 0:
+                    print(term.move_xy(x, y) + '┴', end='')
                 elif x % (column * coord_x) == 0 and y % (row * coord_x) == 0:
                     print(term.move_xy(x, y) + '┘', end='')
-                elif x % column == 0 and y % (row * coord_x) == 0:
-                    print(term.move_xy(x, y) + '┴', end='')
                 elif x == 0 and y % row == 0:
                     print(term.move_xy(x, y) + '├', end='')
                 elif x % (column * coord_x) == 0 and y % row == 0:
@@ -129,13 +129,13 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                     print(term.move_xy(x + 1, y) + str((y + row // 2) // row), end='')
                 for ghost in board_info['team1']:
                     if ghost == (x, y):
-                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F47B')
+                        print(term.move_xy(4 * x - 3, 2 * y - 1) + '\U0001F47B')
                 for alien in board_info['team2']:
                     if alien == (x, y):
-                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F47D')
+                        print(term.move_xy(4 * x - 3, 2 * y - 1) + '\U0001F47D')
                 for magic in board_info['magic']:
                     if magic == (x, y):
-                        print(term.move_xy(4*x-3, 2*y-1) + '\U0001F52E')
+                        print(term.move_xy(4 * x - 3, 2 * y - 1) + '\U0001F52E')
 
     ...
 
