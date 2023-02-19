@@ -107,10 +107,10 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                     print(term.move_xy(x, y) + '└', end='')
                 elif y == 0 and x % column == 0:
                     print(term.move_xy(x, y) + '┬', end='')
-                elif x % column == 0 and y % (coord_y * row) == 0:
-                    print(term.move_xy(x, y) + '┴', end='')
-                elif x % (column * coord_x) == 0 and y % (row * coord_x) == 0:
+                elif x == (column * coord_x) and y == (row * coord_y):
                     print(term.move_xy(x, y) + '┘', end='')
+                elif x % column == 0 and y == (coord_y * row):
+                    print(term.move_xy(x, y) + '┴', end='')
                 elif x == 0 and y % row == 0:
                     print(term.move_xy(x, y) + '├', end='')
                 elif x % (column * coord_x) == 0 and y % row == 0:
