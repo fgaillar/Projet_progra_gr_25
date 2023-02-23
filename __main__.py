@@ -6,10 +6,6 @@ import IA as IA
 term = Terminal()
 
 
-def player_information(board_info):
-    coord_y, coord_x = board_info['size']
-
-
 def obtain_moves():
     spawn_ghost = False
     tab_heal = []
@@ -52,6 +48,16 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
     """
 
     def create_board_info(map_path):
+        """Create a dictionary which contain all information
+
+        parameter:
+        -------------
+        map_path:
+
+        return:
+        -------------
+        board_info : a dyco which contain all information of the board and spawn
+        """
         if '.ght' in map_path:
             board_info = {}
             fh = open(map_path, 'r')
@@ -94,6 +100,13 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         return board_info
 
     def print_board(board_info):
+        """Print the board on the screen
+
+        parameter:
+        -------------
+        board_info:
+
+        """
         row = 2
         column = 4
         coord_y, coord_x = board_info['size']
@@ -137,7 +150,19 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
                     if magic == (x, y):
                         print(term.move_xy(4 * x - 3, 2 * y - 1) + '\U0001F52E')
 
-    ...
+    def print_player_information(board_info):
+        """
+
+        parameter:
+        ---------------
+        board_info:
+
+        return:
+        ---------------
+
+        """
+        ...
+
 
     # create connection, if necessary
     if type_1 == 'remote':
@@ -148,13 +173,14 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
     nb_turn = 0
     game_over = False
     board_info = create_board_info('bruh.ght')
+    print_player_information(board_info)
+    coord_y, coord_x = board_info['size']
     print(term.enter_fullscreen)
 
     while not game_over:
 
         print(term.home + term.clear)
-        coord_y, coord_x = board_info['size']
-        # print(board_info)
+        #print(board_info)
         print_board(board_info)
         print(term.move_xy(0, coord_y * 8), end='')
         nb_turn += 1
